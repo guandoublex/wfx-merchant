@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace = 所需实现的接口全限定名-->
+<mapper namespace="com.gxx.wfx.merchant.dao.MemeberDAO">
+
+    <resultMap id="memeberMap" type="memeber">
+        <id column="memeber_id" property="memId"/>
+        <result column="account" property="memAccount"/>
+        <result column="qq_num" property="memQqnum"/>
+        <result column="email" property="memEmail"/>
+        <result column="phone" property="memPhone"/>
+        <result column="recom_user" property="memRecomUser"/>
+        <result column="register_time" property="memRegisterTime"/>
+        <result column="pay_account" property="memPayAccount"/>
+        <result column="name" property="memName"/>
+        <result column="password" property="memPassword"/>
+        <result column="visit_code" property="memVisitCode"/>
+        <result column="use_recom" property="memUseRecom"/>
+        <result column="level_code" property="memLevelCode"/>
+        <result column="mid" property="memMid"/>
+        <result column="update_time" property="memUpdateTime"/>
+    </resultMap>
+
+
+
+<!--    public Memeber memeberLogin(@Param("memAccount") String memAccount,@Param("mempassword")String mempassword);//自媒体登录-->
+    <select id="memeberLogin" resultMap="memeberMap">
+        select memeber_id,account,qq_num,email,phone,recom_user,register_time,
+               pay_account,name,password,visit_code,use_recom,level_code,mid,update_time
+               from wxb_memeber where account = #{memAccount} and password = #{memPassword};
+    </select>
+
+<!--    public boolean memberRegister(Memeber memeber);//自媒体注册-->
+    <insert id="memberRegister">
+        insert into wxb_memeber(memeber_id,account,qq_num,email,phone,register_time,pay_account,name,password,level_code)
+        values (#{memId},#{memAccount},#{memQqnum},#{memEmail},#{memPhone},#{memRegisterTime},#{memPayAccount},#{memName},#{memPassword},#{memLevleCode})
+    </insert>
+
+<!--    public Memeber memeberInfo(String memeberId);//查询自媒体账号信息-->
+    <select id="memeberInfo" resultMap="memeberMap">
+        select memeber_id,account,qq_num,email,phone,recom_user,register_time,
+               pay_account,name,password,visit_code,use_recom,level_code,mid,update_time
+               from wxb_memeber where memeber_id = #{memeberId};
+    </select>
+
+
+</mapper>

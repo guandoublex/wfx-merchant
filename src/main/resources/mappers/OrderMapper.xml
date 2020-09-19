@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace = 所需实现的接口全限定名-->
+<mapper namespace="com.gxx.wfx.merchant.dao.OrderDAO">
+
+    <resultMap id="orderMap" type="com.gxx.wfx.merchant.pojos.Order">
+        <id column="oid" property="oid"/>
+        <result column="order_id" property="orderId"/>
+        <result column="buyer_phone" property="buyerPhone"/>
+        <result column="good_id" property="goodId"/>
+        <result column="order_time" property="orderTime"/>
+        <result column="channel_id" property="channelId"/>
+        <result column="state" property="state"/>
+        <result column="buy_num" property="buyNum"/>
+        <result column="province" property="province"/>
+        <result column="city" property="city"/>
+        <result column="area" property="area"/>
+        <result column="buyer_reamrk" property="buyerReamrk"/>
+        <result column="pay_type" property="payType"/>
+        <result column="buyer_name" property="buyerName"/>
+        <result column="sku_id" property="skuId"/>
+        <result column="user_id" property="userId"/>
+        <result column="address" property="address"/>
+        <result column="courier_id" property="courierId"/>
+        <result column="order_remark" property="orderRemark"/>
+        <result column="sender_type" property="senderType"/>
+        <result column="order_type" property="orderType"/>
+        <result column="admin_remark" property="adminRemark"/>
+        <result column="operator" property="operator"/>
+        <result column="check_time" property="checkTime"/>
+        <result column="order_ip" property="orderIp"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="alipay_state" property="alipayState"/>
+        <association property="good" javaType="com.gxx.wfx.merchant.pojos.Good">
+            <result column="good_name" property="goodName"/>
+        </association>
+        <association property="memeber" javaType="memeber">
+            <result column="account" property="memAccount"/>
+        </association>
+        <association property="goodSku" javaType="goodSku">
+            <result column="sku_name" property="skuName"/>
+        </association>
+    </resultMap>
+
+
+<!--    public List<Order> listPage(@Param("start") int start, @Param("limit") int limit,@Param("state")int state,@Param("customerId")String customerId);//分页查询所有订单-->
+    <select id="listPage" resultMap="orderMap">
+        SELECT o.oid,o.order_id,o.buyer_phone,o.good_id,g.good_name,o.order_time,m.account,o.channel_id,o.state,o.buy_num,o.province,o.city,
+        o.area,o.buyer_reamrk,o.pay_type,o.buyer_name,o.sku_id,gs.sku_name,o.user_id,o.address,o.courier_id,o.order_remark,
+        o.sender_type,o.order_type,o.admin_remark,o.operator,o.check_time,o.order_ip,o.update_time,o.alipay_state
+        FROM wxb_order o
+        INNER JOIN wxb_good_sku gs ON o.sku_id = gs.sku_id
+        INNER JOIN wxb_good g ON o.good_id = g.good_id
+        INNER JOIN wxb_memeber m ON o.user_id = m.memeber_id
+        WHERE g.customer_id = #{customerId} <if test="state != null and state != 0">
+                                                                AND o.state = #{state}
+                                                            </if>
+     limit #{start},#{limit};
+    </select>
+
+<!--    public List<Order> list(@Param("state")int state,@Param("customerId")String customerId);//查询所有订单-->
+    <select id="list" resultMap="orderMap">
+        SELECT o.oid,o.order_id,o.buyer_phone,o.good_id,g.good_name,o.order_time,m.account,o.channel_id,o.state,o.buy_num,o.province,o.city,
+        o.area,o.buyer_reamrk,o.pay_type,o.buyer_name,o.sku_id,gs.sku_name,o.user_id,o.address,o.courier_id,o.order_remark,
+        o.sender_type,o.order_type,o.admin_remark,o.operator,o.check_time,o.order_ip,o.update_time,o.alipay_state
+        FROM wxb_order o
+        INNER JOIN wxb_good_sku gs ON o.sku_id = gs.sku_id
+        INNER JOIN wxb_good g ON o.good_id = g.good_id
+        INNER JOIN wxb_memeber m ON o.user_id = m.memeber_id
+        WHERE g.customer_id = #{customerId} <if test="state != null and state != 0">
+                                                                AND o.state = #{state}
+                                                            </if>
+    </select>
+
+<!--    public boolean updateOrder(String oid);//发货-->
+    <update id="updateOrder">
+        UPDATE wxb_order SET state = 5 WHERE oid =#{oid};
+    </update>
+<!--    public boolean addOrder(Order order);//添加订单-->
+    <insert id="addOrder">
+        insert into wxb_order(order_id,buyer_phone,good_id,order_time,channel_id,state,buy_num,province,city,area,buyer_reamrk,pay_type,buyer_name,sku_id,
+                              address,courier_id,order_remark,order_type,alipay_state)
+        values (#{orderId},#{buyerPhone},#{goodId},#{orderTime},#{channelId},#{state},#{buyNum},#{province},#{city},#{area},#{buyerReamrk},#{payType},#{buyerName},
+                #{skuId},#{address},#{courierId},#{orderRemark},#{orderType},#{alipayState})
+    </insert>
+</mapper>

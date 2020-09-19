@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace = 所需实现的接口全限定名-->
+<mapper namespace="com.gxx.wfx.merchant.dao.GoodDAO">
+
+    <resultMap id="goodMap" type="good">
+        <id column="good_id" property="goodId"/>
+        <result column="good_name" property="goodName"/>
+        <result column="customer_id" property="customerId"/>
+        <result column="good_pic1" property="goodPic1"/>
+        <result column="good_pic2" property="goodPic2"/>
+        <result column="good_pic3" property="goodPic3"/>
+        <result column="promote_desc" property="promoteDesc"/>
+        <result column="copy_ids" property="copyIds"/>
+        <result column="copy_desc" property="copyDesc"/>
+        <result column="forward_link" property="forwardLink"/>
+        <result column="order_no" property="orderNo"/>
+        <result column="type_id" property="typeId"/>
+        <result column="tags" property="tags"/>
+        <result column="state" property="state"/>
+        <result column="create_time" property="createTime"/>
+        <result column="toped" property="toped"/>
+        <result column="recomed" property="recomed"/>
+        <result column="toped_time" property="topedTime"/>
+        <result column="recomed_time" property="recomedTime"/>
+        <result column="spc_id" property="spcId"/>
+        <result column="zon_id" property="zonId"/>
+        <result column="sell_num" property="sellNum"/>
+        <result column="website" property="webSite"/>
+        <result column="kfqq" property="kfqq"/>
+    </resultMap>
+
+    <resultMap id="goodMap1" type="good">
+        <id column="good_id" property="goodId"/>
+        <result column="good_name" property="goodName"/>
+        <result column="customer_id" property="customerId"/>
+        <result column="good_pic1" property="goodPic1"/>
+        <result column="good_pic2" property="goodPic2"/>
+        <result column="good_pic3" property="goodPic3"/>
+        <result column="promote_desc" property="promoteDesc"/>
+        <result column="copy_ids" property="copyIds"/>
+        <result column="copy_desc" property="copyDesc"/>
+        <result column="forward_link" property="forwardLink"/>
+        <result column="order_no" property="orderNo"/>
+        <result column="type_id" property="typeId"/>
+        <result column="tags" property="tags"/>
+        <result column="state" property="state"/>
+        <result column="create_time" property="createTime"/>
+        <result column="toped" property="toped"/>
+        <result column="recomed" property="recomed"/>
+        <result column="toped_time" property="topedTime"/>
+        <result column="recomed_time" property="recomedTime"/>
+        <result column="spc_id" property="spcId"/>
+        <result column="zon_id" property="zonId"/>
+        <result column="sell_num" property="sellNum"/>
+        <result column="website" property="webSite"/>
+        <result column="kfqq" property="kfqq"/>
+        <collection property="goodSkuList" ofType="com.gxx.wfx.merchant.pojos.GoodSku">
+            <result column="sku_name" property="skuName"/>
+            <result column="sku_cost" property="skuCost"/>
+            <result column="sku_price" property="skuPrice"/>
+            <result column="sku_pmoney" property="skuPmoney"/>
+            <result column="sku_id" property="skuId"/>
+        </collection>
+        <collection property="customerList" ofType="com.gxx.wfx.merchant.pojos.Customer">
+            <result column="customer_name" property="customerName"/>
+            <result column="customer_id" property="customerId"/>
+            <result column="level" property="level"/>
+            <result column="QQ" property="customerQQ"/>
+        </collection>
+    </resultMap>
+
+<!--    public List<Good> list();//查询商品-->
+    <select id="list" resultMap="goodMap">
+        select good_id,good_name,customer_id,good_pic1,good_pic2,good_pic3,promote_desc,copy_ids,copy_desc,forward_link,order_no,type_id,
+               tags,state,create_time,toped,recomed,toped_time,recomed_time,spc_id,zon_id,sell_num,website,kfqq
+        from wxb_good;
+    </select>
+
+<!--    public List<Good> goodList(@Param("start") int start,@Param("limit") int limit);//分页查询商品-->
+    <select id="goodList" resultMap="goodMap">
+        select good_id,good_name,customer_id,good_pic1,good_pic2,good_pic3,promote_desc,copy_ids,copy_desc,forward_link,order_no,type_id,
+               tags,state,create_time,toped,recomed,toped_time,recomed_time,spc_id,zon_id,sell_num,website,kfqq
+        from wxb_good LIMIT #{start},#{limit};
+    </select>
+
+<!--    public boolean updateGood(Good good);//商品修改-->
+    <update id="updateGood">
+        UPDATE wxb_good SET good_name =#{goodName},good_pic1 = #{goodPic1},type_id =#{typeId},promote_desc = #{promoteDesc},
+        website = #{webSite},kfqq = #{kfqq},copy_desc = #{copyDesc},copy_ids = #{copyIds}
+        WHERE good_id =#{goodId};
+    </update>
+
+<!--    public boolean delGood(String goodId);//商品删除-->
+    <delete id="delGood">
+        delete from wxb_good
+        where good_id = #{goodId};
+    </delete>
+
+<!--    public boolean addGood(Good good);//商品添加-->
+    <insert id="addGood">
+        insert into wxb_good(good_id,good_name,customer_id,good_pic1,good_pic2,good_pic3,promote_desc,copy_ids,copy_desc,forward_link,
+                    order_no,type_id,tags,state,create_time,toped,recomed,toped_time,recomed_time,spc_id,zon_id,sell_num,website,kfqq)
+        values (#{goodId},#{goodName},#{customerId},#{goodPic1},#{goodPic2},#{goodPic3},#{promoteDesc},#{copyIds},#{copyDesc},#{forwardLink},
+                #{orderNo},#{typeId},#{tags},#{state},#{createTime},#{toped},#{recomed},#{topedTime},#{recomedTime},#{spcId},#{zonId},#{sellNum},#{webSite},#{kfqq});
+    </insert>
+
+<!--    public boolean addGoodCppy(@Param("goodId")String goodId,@Param("copyId")String copyId);//商品添加文案-->
+    <update id="addGoodCppy">
+        UPDATE wxb_good_copy SET goods_id =#{goodId}
+        WHERE copy_id =#{copyId};
+    </update>
+
+    <!--    public List<Good> goodsAndCopy(String customerId,String typeId,String orderBy);//商品文案查询-->
+    <select id="goodsAndCopy" resultMap="goodMap1">
+        SELECT g.good_id,g.good_name,g.customer_id,g.good_pic1,g.good_pic2,g.good_pic3,g.promote_desc,
+			 g.copy_ids,g.copy_desc,g.forward_link,g.order_no,g.type_id,g.tags,g.state,g.create_time,
+			 g.toped,g.recomed,g.toped_time,g.recomed_time,g.sell_num,g.spc_id,g.zon_id,g.website,g.kfqq,
+			 gs.sku_name,gs.sku_cost,gs.sku_price,gs.sku_pmoney,c.customer_name,c.level
+        FROM wxb_good g
+        INNER JOIN wxb_good_sku gs ON g.good_id = gs.good_id
+        INNER JOIN wxb_customer c ON g.customer_id = c.customer_id
+        where 1=1
+        <if test="customerId != null and customerId != ''">
+            AND g.customer_id = #{customerId}
+        </if>
+        <if test="typeId != null and typeId != ''">
+            AND g.type_id = #{typeId}
+        </if>
+        <if test="orderBy !=null and orderBy != ''">
+            order by g.${orderBy}
+        </if>
+
+    </select>
+
+<!--    public Good goodDetail(String goodId);//通过goodId查询商品详情-->
+    <select id="goodDetail" resultMap="goodMap1">
+        SELECT g.good_id,g.good_name,g.customer_id,g.good_pic1,g.good_pic2,g.good_pic3,g.promote_desc,
+			 g.copy_ids,g.copy_desc,g.forward_link,g.order_no,g.type_id,g.tags,g.state,g.create_time,
+			 g.toped,g.recomed,g.toped_time,g.recomed_time,g.sell_num,g.spc_id,g.zon_id,g.website,g.kfqq,
+			 gs.sku_id,gs.sku_name,gs.sku_cost,gs.sku_price,gs.sku_pmoney,c.customer_name,c.level,c.QQ
+        FROM wxb_good g
+        INNER JOIN wxb_good_sku gs ON g.good_id = gs.good_id
+        INNER JOIN wxb_customer c ON g.customer_id = c.customer_id
+        where g.good_id = #{goodId};
+    </select>
+
+</mapper>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace = 所需实现的接口全限定名-->
+<mapper namespace="com.gxx.wfx.merchant.dao.CopyDAO">
+
+    <resultMap id="copyMap" type="copy">
+        <id column="copy_id" property="copyId"/>
+        <result column="copy_title" property="copyTitle"/>
+        <result column="copy_link" property="copyLink"/>
+        <result column="copy_content" property="copyContent"/>
+        <result column="type_id" property="typeId"/>
+        <result column="goods_id" property="goodsId"/>
+    </resultMap>
+
+<!--    public List<Copy> List();//查询文案-->
+    <select id="List" resultMap="copyMap">
+        select copy_id,copy_title,copy_content,copy_link,type_id,goods_id
+        from wxb_good_copy;
+    </select>
+
+<!--    public List<Copy> ListByGoodsId();//查询未使用的文案-->
+    <select id="ListByGoodsId" resultMap="copyMap">
+        select copy_id,copy_title,copy_content,copy_link,type_id,goods_id
+        from wxb_good_copy WHERE goods_id IS NULL AND type_id = 0;
+    </select>
+
+<!--    public List<Copy> copyList(@Param("start") int start, @Param("limit") int limit);//分页查询文案-->
+    <select id="copyList" resultMap="copyMap">
+        select copy_id,copy_title,copy_link,copy_content,type_id,goods_id
+        from wxb_good_copy limit #{start},#{limit};
+    </select>
+
+<!--    public boolean delCopy(int copyId);//删除文案-->
+    <delete id="delCopy">
+        delete from wxb_good_copy where copy_id = #{copyId}
+    </delete>
+
+<!--    public boolean updateCopy(Copy copy);//修改文案-->
+    <update id="updateCopy">
+        update wxb_good_copy set copy_title = #{copyTitle},copy_link = #{copyLink},
+        copy_content = #{copyContent},type_id = #{typeId},goods_id = #{goodsId} where copy_id = #{copyId};
+    </update>
+
+<!--    public boolean addCopy(Copy copy);//增加文案-->
+    <insert id="addCopy">
+        insert into wxb_good_copy(copy_title,copy_link,copy_content,type_id)
+        values (#{copyTitle},#{copyLink},#{copyContent},#{typeId});
+    </insert>
+
+</mapper>

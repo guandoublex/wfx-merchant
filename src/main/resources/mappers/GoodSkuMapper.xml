@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace = 所需实现的接口全限定名-->
+<mapper namespace="com.gxx.wfx.merchant.dao.GoodSkuDAO">
+
+    <resultMap id="GoodSkuMap" type="goodSku">
+        <id column="sku_id" property="skuId"/>
+        <result column="sku_name" property="skuName"/>
+        <result column="sku_cost" property="skuCost"/>
+        <result column="sku_price" property="skuPrice"/>
+        <result column="sku_pmoney" property="skuPmoney"/>
+        <result column="good_id" property="goodId"/>
+        <result column="order_no" property="orderNo"/>
+        <result column="service_money" property="serviceMoney"/>
+    </resultMap>
+
+<!--    public List<GoodSku> list(String goodId);//根据商品Id查询商品套餐-->
+    <select id="list" resultMap="GoodSkuMap">
+        select sku_id,sku_name,sku_cost,sku_price,sku_pmoney,good_id,order_no,service_money
+        from wxb_good_sku where good_id = #{goodId};
+    </select>
+
+</mapper>

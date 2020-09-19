@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace = 所需实现的接口全限定名-->
+<mapper namespace="com.gxx.wfx.merchant.dao.AddressDAO">
+
+    <resultMap id="provinceMap" type="province">
+        <id column="province_id" property="provinceId"/>
+        <result column="province_name" property="provinceName"/>
+    </resultMap>
+
+    <resultMap id="cityMap" type="city">
+        <id column="city_id" property="cityId"/>
+        <result column="city_name" property="cityName"/>
+    </resultMap>
+
+    <resultMap id="regionMap" type="region">
+        <id column="region_id" property="regionId"/>
+        <result column="region_name" property="regionName"/>
+    </resultMap>
+
+
+<!--    public List<Province> provinceList();//查询所有省份-->
+    <select id="provinceList" resultMap="provinceMap">
+        select province_id,province_name from province;
+    </select>
+
+<!--    public List<City> cityList(String provinceId);//通过省份Id查询市-->
+    <select id="cityList" resultMap="cityMap">
+        select city_id,city_name from city where province_id = #{provinceId};
+    </select>
+
+<!--    public List<Region> regionList(int cityId);//通过市Id查询区-->
+    <select id="regionList" resultMap="regionMap">
+        select region_id,region_name from region where city_id = #{cityId};
+    </select>
+
+<!--    public Province provinceById(String provinceId);//通过id查询省份名字-->
+    <select id="provinceById" resultMap="provinceMap">
+        select province_id,province_name from province where province_id = #{provinceId};
+    </select>
+
+<!--    public City cityById(int cityId);//通过id查询市名字-->
+    <select id="cityById" resultMap="cityMap">
+        select city_id,city_name from city where city_id = #{cityId};
+    </select>
+
+<!--    public Region regionById(int regionId);//通过id查询区名字-->
+    <select id="regionById" resultMap="regionMap">
+        select region_id,region_name from region  where region_id = #{regionId}
+    </select>
+</mapper>

@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/db_wfx?characterEncoding=UTF-8
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: 123456
+  redis:
+    database: 0
+    host: 39.99.143.143
+    port: 6379
+    password: 123456
+
+mybatis:
+  type-aliases-package: com.gxx.wfx.merchant.pojos
+  mapper-locations: classpath:mappers/*Mapper.xml

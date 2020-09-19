@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace = 所需实现的接口全限定名-->
+<mapper namespace="com.gxx.wfx.merchant.dao.CustomerDAO">
+
+    <resultMap id="customerMap" type="customer">
+        <id column="customer_id" property="customerId"/>
+        <result column="customer_name" property="customerName"/>
+        <result column="QQ" property="customerQQ"/>
+        <result column="wxh" property="customerWxh"/>
+        <result column="phone" property="customerPhone"/>
+        <result column="createtime" property="createtime"/>
+        <result column="login_name" property="loginName"/>
+        <result column="login_pwd" property="loginPwd"/>
+        <result column="state" property="state"/>
+        <result column="level" property="level"/>
+        <result column="acc_balance" property="accBalance"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="website" property="website"/>
+    </resultMap>
+
+    <resultMap id="customerMap1" type="customer">
+        <id column="customer_id" property="customerId"/>
+        <result column="customer_name" property="customerName"/>
+    </resultMap>
+
+<!--    public boolean customerLogin(@Param("customerName") String customerName,@Param("customerPwd")String customerPwd);//商户登录-->
+    <select id="customerLogin" resultMap="customerMap">
+        select customer_id,customer_name,QQ,wxh,phone,createtime,login_name,login_pwd,state,level,acc_balance,update_time,website
+         from wxb_customer where login_name = #{customerName} and login_pwd = #{customerPwd} and state = 1;
+    </select>
+
+<!--    public Customer customerInfo(String customerId);     //查询商户信息-->
+    <select id="customerInfo" resultMap="customerMap">
+        select customer_id,customer_name,QQ,wxh,phone,createtime,login_name,login_pwd,state,level,acc_balance,update_time,website
+         from wxb_customer where customer_id = #{customerId} and state = 1;
+    </select>
+
+<!--    public List<Customer> customerList();//查询所有的商户名字-->
+    <select id="customerList" resultMap="customerMap1">
+        select customer_id,customer_name from wxb_customer;
+    </select>
+</mapper>
